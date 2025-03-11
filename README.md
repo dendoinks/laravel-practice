@@ -5,12 +5,18 @@
 This repository is for practicing Laravel development, including authentication, route testing, and API interactions using Postman.  
 
 ## **📌 Project Setup**  
-
 ### **1️⃣ Install Laravel**  
 If you haven't installed Laravel, create the project using:  
 ```sh
 laravel new laravel-practice
-```
+```  
+- Select **React Starter Kit** (`react`).  
+- Choose **Laravel** as the authentication provider.  
+- Set **Pest** as the testing framework.  
+- Agree to run:  
+  ```sh
+  npm install && npm run build
+  ```
 
 ### **2️⃣ Navigate to the Project Folder**  
 ```sh
