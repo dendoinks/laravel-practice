@@ -23,31 +23,7 @@ composer install
 npm install && npm run build
 ```
 
-### **4️⃣ Configure Environment Variables**  
-- Copy the `.env.example` file to `.env`  
-```sh
-cp .env.example .env
-```
-- Generate an application key:  
-```sh
-php artisan key:generate
-```
-- Update **database credentials** in `.env`:  
-  ```
-  DB_CONNECTION=pgsql
-  DB_HOST=127.0.0.1
-  DB_PORT=5432
-  DB_DATABASE=laravel_practice
-  DB_USERNAME=your_username
-  DB_PASSWORD=your_password
-  ```
-
-### **5️⃣ Run Migrations**
-```sh
-php artisan migrate
-```
-
-### **6️⃣ Start Laravel Server**
+### **4️⃣ Start Laravel Server**
 ```sh
 php artisan serve
 ```
