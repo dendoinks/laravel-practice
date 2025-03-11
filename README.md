@@ -182,25 +182,6 @@ protected $except = [
 - Laravel authentication is **session-based by default**, so **Postman must store cookies**.
 - To use Laravel **API authentication**, consider using **Laravel Sanctum** or **Laravel Passport**.
 
----
-
-## **📌 Contribution Guidelines**
-1. Create a feature branch:  
-   ```sh
-   git checkout -b feature-branch
-   ```
-2. Commit changes:  
-   ```sh
-   git commit -m "Add new feature"
-   ```
-3. Push changes:  
-   ```sh
-   git push origin feature-branch
-   ```
-4. Open a **Pull Request**.
-
----
-
 ## **📌 License**
 This project is licensed under the MIT License.  
 
