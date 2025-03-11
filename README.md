@@ -140,10 +140,32 @@ variables_order = "GPCS"
 
 ---
 
-## **📌 Handling CSRF Tokens in Postman**  
+## **📌 Handling CSRF Tokens in Postman**
+
 If you receive a **419 Page Expired** error, Laravel requires a CSRF token for `POST`, `PATCH`, and `DELETE` requests.
 
-### **Option 1: Disable CSRF for Testing (Not Recommended in Production)**
+### **Option 1: Use Laravel's CSRF Endpoint (Recommended)**
+
+1. Send a `GET` request to:
+   ```sh
+   http://127.0.0.1:8000/sanctum/csrf-cookie
+   ```
+2. Postman will store the CSRF token automatically for subsequent requests.
+
+### **Option 2: Manually Send CSRF Token**
+
+- Add a **Header**:
+  ```
+  X-CSRF-TOKEN: your_token_here
+  ```
+- Or include in the **Body**:
+  ```json
+  {
+    "_token": "your_token_here",
+    "name": "Updated Name"
+  }
+  ```
+### **Option 3: Disable CSRF for Testing (Not Recommended in Production)**
 In `VerifyCsrfToken.php`, add routes to the `$except` array:
 ```php
 protected $except = [
@@ -154,35 +176,11 @@ protected $except = [
 ];
 ```
 
-### **Option 2: Send CSRF Token in Postman**
-1. **Get the Token**  
-   - Open `http://127.0.0.1:8000/login` in a browser.
-   - Inspect the page source and look for:
-     ```html
-     <meta name="csrf-token" content="your_token_here">
-     ```
-   - Copy the value.
-
-2. **Include in Postman Requests**  
-   - Add a **Header**:
-     ```
-     X-CSRF-TOKEN: your_token_here
-     ```
-   - Or include in the **Body**:
-     ```json
-     {
-       "_token": "your_token_here",
-       "name": "Updated Name"
-     }
-     ```
-
 ---
-
-## **📌 Additional Notes**
-- Laravel authentication is **session-based by default**, so **Postman must store cookies**.
-- To use Laravel **API authentication**, consider using **Laravel Sanctum** or **Laravel Passport**.
 
 ## **📌 License**
-This project is licensed under the MIT License.  
+
+This project is licensed under the MIT License.
 
 ---
+
