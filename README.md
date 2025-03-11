@@ -1,5 +1,3 @@
-Here's a **README.md** file for your Laravel practice project. It provides guidance on setting up the project and testing routes using Postman.  
-
 ---
 
 # **Laravel Practice Project**  
