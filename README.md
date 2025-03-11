@@ -145,7 +145,7 @@ variables_order = "GPCS"
     ```
     Accept: application/json
     Content-Type: application/json
-  ```
+  ```json
     {
       "name": "John Doe Updated",
       "email": "johndoe@example.com"
