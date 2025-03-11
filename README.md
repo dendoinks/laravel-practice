@@ -146,8 +146,6 @@ variables_order = "GPCS"
     Accept: application/json
     Content-Type: application/json
   ```
-  - **Body (JSON format):**
-    ```json
     {
       "name": "John Doe Updated",
       "email": "johndoe@example.com"
@@ -225,5 +223,3 @@ protected $except = [
 This project is licensed under the MIT License.  
 
 ---
-
-This README provides clear steps for setting up the project and testing authentication routes in Postman. Let me know if you need further modifications! 🚀
