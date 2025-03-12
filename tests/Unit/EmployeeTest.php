@@ -1,4 +1,3 @@
-<?php
 namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -7,7 +6,13 @@ use Tests\TestCase;
 
 class EmployeeTest extends TestCase
 {
-    use RefreshDatabase; // Ensures a fresh DB for each test
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->artisan('migrate'); // Ensure the database is migrated before each test
+    }
 
     /** @test */
     public function it_can_create_an_employee()
@@ -28,7 +33,7 @@ class EmployeeTest extends TestCase
     {
         $employee = Employee::factory()->create();
 
-        $found = Employee::find($employee->id);
+        $found = Employee::where('id', $employee->id)->first();
 
         $this->assertNotNull($found);
         $this->assertEquals($employee->id, $found->id);
