@@ -2,7 +2,7 @@
 
 # **Laravel Practice Project**  
 
-This repository is for practicing Laravel development, including authentication, route testing, and API interactions using Postman.  
+This repository is for practicing Laravel development, including authentication, route testing, API interactions using Postman, and modular architecture using `nwidart/laravel-modules`.
 
 ## **📌 Project Setup**  
 ### **1️⃣ Install Laravel**  
