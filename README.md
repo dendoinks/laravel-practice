@@ -1,6 +1,4 @@
----
-
-# **Laravel Practice Project**  
+# **Laravel Practice Project**
 
 This repository is for practicing Laravel development, including authentication, route testing, API interactions using Postman, and modular architecture using `nwidart/laravel-modules`.
 
@@ -29,7 +27,38 @@ composer install
 npm install && npm run build
 ```
 
-### **4️⃣ Start Laravel Server**
+### **4️⃣ Configure `nwidart/laravel-modules`**
+To enable modular architecture, install `nwidart/laravel-modules`:
+```sh
+composer require nwidart/laravel-modules
+```
+
+#### **Publish the Package Configuration**
+Run the following command to publish the package configuration file:
+```sh
+php artisan vendor:publish --provider="Nwidart\Modules\LaravelModulesServiceProvider"
+```
+
+#### **Enable Merge Plugin for Composer**
+To allow Laravel to merge module-specific `composer.json` files, add the following to `composer.json`:
+```json
+"extra": {
+    "laravel": {
+        "dont-discover": []
+    },
+    "merge-plugin": {
+        "include": [
+            "Modules/*/composer.json"
+        ]
+    }
+}
+```
+Then, run:
+```sh
+composer update
+```
+
+### **5️⃣ Start Laravel Server**  
 ```sh
 php artisan serve
 ```
@@ -178,8 +207,128 @@ protected $except = [
 
 ---
 
-## **📌 License**
+## **📌 Modular Architecture & Parent-Child Relationship**
 
+### **Creating Modules**
+To generate a module, use:
+```sh
+php artisan module:make Company
+php artisan module:make Employee
+```
+
+### **Generating Models, Migrations, and Controllers**
+```sh
+php artisan module:make-model Company -m
+php artisan module:make-model Employee -m
+php artisan module:make-controller CompanyController
+php artisan module:make-controller EmployeeController
+```
+
+### **Migration Files**
+Update `2025_xx_xx_xxxxxx_create_companies_table.php`:
+```php
+Schema::create('companies', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('address')->nullable();
+    $table->timestamps();
+});
+```
+
+Update `2025_xx_xx_xxxxxx_create_employees_table.php`:
+```php
+Schema::create('employees', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    $table->string('email')->unique();
+    $table->string('position');
+    $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
+    $table->timestamps();
+});
+```
+
+Run the migrations:
+```sh
+php artisan migrate
+```
+
+### **Seeding Data for Testing**
+Create a seeder:
+```sh
+php artisan module:make-seed EmployeesTableSeeder
+```
+Modify `EmployeesTableSeeder.php`:
+```php
+public function run()
+{
+    $company = \Modules\Company\Models\Company::create([
+        'name' => 'Tech Corp',
+        'address' => '123 Main Street'
+    ]);
+
+    for ($i = 1; $i <= 5; $i++) {
+        $company->employees()->create([
+            'name' => "Employee $i",
+            'email' => "employee{$i}@example.com",
+            'position' => 'Developer'
+        ]);
+    }
+}
+```
+Run the seeder:
+```sh
+php artisan db:seed --class=Modules\\Employee\\Database\\Seeders\\EmployeesTableSeeder
+```
+
+### **Unit Testing the Relationship**
+Create a test file:
+```sh
+php artisan make:test EmployeeTest --unit
+```
+Modify `EmployeeTest.php`:
+```php
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Employee\Models\Employee;
+use Tests\TestCase;
+
+class EmployeeTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function it_can_create_an_employee()
+    {
+        $employee = Employee::create([
+            'name' => 'Test Employee',
+            'email' => 'test@example.com',
+            'position' => 'Developer',
+            'company_id' => 1
+        ]);
+
+        $this->assertDatabaseHas('employees', [
+            'email' => 'test@example.com',
+        ]);
+    }
+
+    /** @test */
+    public function it_can_retrieve_an_employee()
+    {
+        $employee = Employee::factory()->create();
+        $found = Employee::find($employee->id);
+
+        $this->assertNotNull($found);
+        $this->assertEquals($employee->id, $found->id);
+    }
+}
+```
+Run the tests:
+```sh
+php artisan test --filter=EmployeeTest
+```
+
+---
+
+## **📌 License**  
 This project is licensed under the MIT License.
 
 ---
